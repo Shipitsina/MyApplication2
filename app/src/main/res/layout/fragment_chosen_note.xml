@@ -8,9 +8,21 @@
     tools:context=".ChosenNoteFragment">
 
 
-    <TextView
-        android:id="@+id/textView"
+    <EditText
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Title" />
+    <EditText
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="" />
+    <TextView
+        android:id="@+id/currentDateTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"/>
+
+
 </LinearLayout>
