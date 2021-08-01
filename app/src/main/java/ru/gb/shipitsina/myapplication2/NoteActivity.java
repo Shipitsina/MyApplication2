@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
+import java.util.Calendar;
+
 public class NoteActivity extends AppCompatActivity {
 
     @Override

@@ -1,27 +1,25 @@
 package ru.gb.shipitsina.myapplication2;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import java.util.Calendar;
 
-public class ChosenNoteFragment extends Fragment {
+public class FavoriteFragment extends Fragment {
 
     public static final String ARG_PARAM_INDEX = "index";
 
     private int index;
     TextView currentDateTime;
     Calendar dateAndTime= Calendar.getInstance();
-    public ChosenNoteFragment() {
+    public FavoriteFragment() {
     }
 
     public static ChosenNoteFragment newInstance(int index) {
