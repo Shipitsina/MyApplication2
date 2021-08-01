@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:id="@+id/drawer_layout">
 
     <fragment
-        android:name="ru.gb.shipitsina.myapplication2.NotesFragment"
+        android:name="ru.gb.shipitsina.myapplication2.ui.NotesFragment"
         android:id="@+id/notes"
         android:layout_weight="1"
         android:layout_width="0px"

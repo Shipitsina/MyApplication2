@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Calendar;
 
+import ru.gb.shipitsina.myapplication2.ui.NotesFragment;
+
 public class FavoriteFragment extends Fragment {
 
     public static final String ARG_PARAM_INDEX = "index";
@@ -50,16 +52,16 @@ public class FavoriteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         currentDateTime=(TextView) view.findViewById(R.id.currentDateTime);
-        initNote(view);
+        //initNote(view);
         setInitialDateTime();
     }
 
-    private void initNote(View view) {
+    /*private void initNote(View view) {
         TextView tvTitle = view.findViewById(R.id.title);
         tvTitle.setText(NotesFragment.notes[index].getTitle());
         TextView tvContent = view.findViewById(R.id.content);
         tvContent.setText(NotesFragment.notes[index].getContent());
-    }
+    }*/
 
     // установка начальных даты и времени
     private void setInitialDateTime() {
