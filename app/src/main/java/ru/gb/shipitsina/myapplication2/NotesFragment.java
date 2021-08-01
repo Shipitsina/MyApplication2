@@ -45,6 +45,7 @@ public class NotesFragment extends Fragment {
 
         isLand = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 
+
         if (isLand){
             showNoteLand(DEFAULT_INDEX);
         }
