@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Calendar;
 
-import ru.gb.shipitsina.myapplication2.ui.NotesFragment;
+import ru.gb.shipitsina.myapplication2.ui.ChosenNoteFragment;
 
 public class FavoriteFragment extends Fragment {
 

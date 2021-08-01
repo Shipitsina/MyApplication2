@@ -2,6 +2,8 @@ package ru.gb.shipitsina.myapplication2.ui;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,14 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import ru.gb.shipitsina.myapplication2.Note;
 import ru.gb.shipitsina.myapplication2.R;
 import ru.gb.shipitsina.myapplication2.data.CardsSource;
 import ru.gb.shipitsina.myapplication2.data.CardsSourceImpl;
 
 public class NotesFragment extends Fragment {
+
+    public static final String CURRENT_NOTE = "CurrentNote";
+    private Note currentNote;
+    private boolean isLandscape;
 
     public static NotesFragment newInstance() {
         return new NotesFragment();
@@ -58,7 +64,21 @@ public class NotesFragment extends Fragment {
             public void onItemClick(View view, int position) {
                 Toast.makeText(getContext(), String.format("Позиция - %d", position),
                         Toast.LENGTH_SHORT).show();
+                showPortCoatOfArms(position);
             }
         });
+    }
+    private void showPortCoatOfArms(int currentNote) {
+        //Получить менеджер фрагментов
+        FragmentManager fragmentManager = getParentFragmentManager();
+
+        // Открыть транзакцию
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        // Добавить фрагмент
+        fragmentTransaction.replace(R.id.fragment_container, ChosenNoteFragment.newInstance(currentNote));
+        fragmentTransaction.addToBackStack(null);
+        // Закрыть транзакцию
+        fragmentTransaction.commit();
     }
 }

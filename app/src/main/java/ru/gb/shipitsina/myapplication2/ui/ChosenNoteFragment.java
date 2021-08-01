@@ -1,4 +1,4 @@
-package ru.gb.shipitsina.myapplication2;
+package ru.gb.shipitsina.myapplication2.ui;
 
 import android.os.Bundle;
 
@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 
-import ru.gb.shipitsina.myapplication2.ui.NotesFragment;
+import ru.gb.shipitsina.myapplication2.R;
 
 public class ChosenNoteFragment extends Fragment {
 

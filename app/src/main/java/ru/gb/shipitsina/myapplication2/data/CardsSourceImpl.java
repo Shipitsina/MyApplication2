@@ -26,13 +26,12 @@ public class CardsSourceImpl implements CardsSource {
         int[] pictures = getImageArray();
         // заполнение источника данных
         for (int i = 0; i < descriptions.length; i++) {
-            dataSource.add(new CardData(titles[i], descriptions[i], pictures[i]));
+            dataSource.add(new CardData(i, pictures[i]));
         }
         return this;
     }
 
     // Механизм вытаскивания идентификаторов картинок
-    // https://stackoverflow.com/questions/5347107/creating-integer-array-of-resource-ids
     private int[] getImageArray(){
         TypedArray pictures = resources.obtainTypedArray(R.array.pictures);
         int length = pictures.length();
