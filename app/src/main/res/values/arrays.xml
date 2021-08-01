@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="titles">
-        <item>One</item>
-        <item>Two</item>
-        <item>Three</item>
+        <item>@string/title1</item>
+        <item>@string/title2</item>
+        <item>@string/title3</item>
+        <item>@string/title4</item>
+        <item>@string/title5</item>
+        <item>@string/title6</item>
     </string-array>
+
+    <string-array name="descriptions">
+        <item>@string/description1</item>
+        <item>@string/description2</item>
+        <item>@string/description3</item>
+        <item>@string/description4</item>
+        <item>@string/description5</item>
+        <item>@string/description6</item>
+    </string-array>
+
+    <array name="pictures">
+        <item>@drawable/blue</item>
+        <item>@drawable/brawn</item>
+        <item>@drawable/cyan</item>
+        <item>@drawable/green</item>
+        <item>@drawable/pink</item>
+        <item>@drawable/yellow</item>
+    </array>
+
 </resources>

@@ -76,7 +76,7 @@ public class MainFragment extends Fragment {
             if (isLand){
                 showNoteLand(index);
             } else {
-                showNotePort(index);
+               // showNotePort(index);
             }
         }
 
@@ -90,7 +90,7 @@ public class MainFragment extends Fragment {
                     .commit();
         }
 
-        private void showNotePort(int index) {
+        /*private void showNotePort(int index) {
             Fragment fragment = ChosenNoteFragment.newInstance(index);
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
@@ -100,5 +100,5 @@ public class MainFragment extends Fragment {
             intent.setClass(getActivity(), NoteActivity.class);
             intent.putExtra(ChosenNoteFragment.ARG_PARAM_INDEX,index);
             startActivity(intent);
-        }
+        }*/
     }

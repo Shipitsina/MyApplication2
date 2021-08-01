@@ -17,28 +17,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/back" />
+                    android:text="back" />
 
                 <Button
                     android:id="@+id/buttonMain"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/main" />
+                    android:text="main" />
 
                 <Button
                     android:id="@+id/buttonFavorite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/favorite" />
+                    android:text="favorite" />
 
                 <Button
                     android:id="@+id/buttonSettings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/settings" />
+                    android:text="settings" />
         </LinearLayout>
 
         <FrameLayout

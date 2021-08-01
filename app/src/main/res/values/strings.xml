@@ -1,22 +1,15 @@
 <resources>
-    <string name="app_name">Fragment Navigation</string>
-    <string name="delete_before_add">Delete before add</string>
-    <string name="back_as_remove_fragment">Back as remove fragment</string>
-    <string name="replace">replace</string>
-    <string name="add">add</string>
-    <string name="new_fragment">New fragment:</string>
-    <string name="use_backstack">Use backstack</string>
-    <string name="main_screen">Main screen</string>
-    <string name="favorite_screen">Favorite screen</string>
-    <string name="settings">Settings</string>
-    <string name="favorite">Favorite</string>
-    <string name="main">Main</string>
-    <string name="back">Back</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="item1">item1</string>
-    <string name="item2">item2</string>
-    <string name="navigation_drawer_open">open</string>
-    <string name="navigation_drawer_close">close</string>
-
+    <string name="app_name">Мои заметки</string>
+    <string name="title1">Синий</string>
+    <string name="title2">Коричневый</string>
+    <string name="title3">Сине-зеленый</string>
+    <string name="title4">Зеленый</string>
+    <string name="title5">Розовый</string>
+    <string name="title6">Жёлтый</string>
+    <string name="description1">Сказочный зелёный лес</string>
+    <string name="description2">Одинокая гора</string>
+    <string name="description3">Бурный водопад в лесу</string>
+    <string name="description4">Красивое сумрачное небо</string>
+    <string name="description5">Мистический туман</string>
+    <string name="description6">Солнечная поляна</string>
 </resources>

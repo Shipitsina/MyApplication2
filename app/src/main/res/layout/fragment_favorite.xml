@@ -11,9 +11,9 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/favorite_screen"
+
         android:textColor="@color/favorite_text_color"
-        android:textSize="@dimen/fragment_dimen"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
