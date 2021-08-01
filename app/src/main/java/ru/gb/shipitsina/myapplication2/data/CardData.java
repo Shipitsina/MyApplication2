@@ -4,13 +4,11 @@ public class CardData {
     private String title;       // заголовок
     private String description; // описание
     private int picture;        // изображение
-    private boolean like;       // флажок
 
-    public CardData(String title, String description, int picture, boolean like){
+    public CardData(String title, String description, int picture){
         this.title = title;
         this.description=description;
         this.picture=picture;
-        this.like=like;
     }
 
     public String getTitle() {
@@ -25,7 +23,4 @@ public class CardData {
         return picture;
     }
 
-    public boolean isLike() {
-        return like;
-    }
 }

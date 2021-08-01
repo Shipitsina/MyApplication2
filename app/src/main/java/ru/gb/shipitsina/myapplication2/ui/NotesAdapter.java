@@ -74,7 +74,6 @@ public class NotesAdapter extends RecyclerView.Adapter <NotesAdapter.ViewHolder>
     private TextView title;
     private TextView description;
     private AppCompatImageView image;
-    private CheckBox like;
 
 
     public ViewHolder(@NonNull View itemView) {
@@ -82,7 +81,6 @@ public class NotesAdapter extends RecyclerView.Adapter <NotesAdapter.ViewHolder>
         title = itemView.findViewById(R.id.title);
         description = itemView.findViewById(R.id.description);
         image = itemView.findViewById(R.id.imageView);
-        like = itemView.findViewById(R.id.like);
 
         // Обработчик нажатий на этом ViewHolder
         image.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +96,6 @@ public class NotesAdapter extends RecyclerView.Adapter <NotesAdapter.ViewHolder>
     public void setData(CardData cardData) {
         title.setText(cardData.getTitle());
         description.setText(cardData.getDescription());
-        like.setChecked(cardData.isLike());
         image.setImageResource(cardData.getPicture());
     }
 }
