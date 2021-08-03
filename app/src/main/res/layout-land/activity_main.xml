@@ -6,7 +6,7 @@
     android:id="@+id/drawer_layout">
 
     <fragment
-        android:name="ru.gb.shipitsina.myapplication2.ui.NotesFragment"
+        android:name="ru.gb.shipitsina.myapplication2.MainActivity$NotesFragment"
         android:id="@+id/notes"
         android:layout_weight="1"
         android:layout_width="0px"
