@@ -1,4 +1,5 @@
 package ru.gb.shipitsina.myapplication2.data;
+import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 
@@ -12,7 +13,7 @@ public class CardsSourceImpl implements CardsSource {
     private List<CardData> dataSource;
     private Resources resources;    // ресурсы приложения
 
-    public CardsSourceImpl(Resources resources) {
+    public CardsSourceImpl(Resources resources) { //Context context
         dataSource = new ArrayList<>(7);
         this.resources = resources;
     }
@@ -48,6 +49,26 @@ public class CardsSourceImpl implements CardsSource {
 
     public int size(){
         return dataSource.size();
+    }
+
+    @Override
+    public void deleteCardData(int position) {
+        dataSource.remove(position);
+    }
+
+    @Override
+    public void updateCardData(int position, CardData cardData) {
+        dataSource.set(position, cardData);
+    }
+
+    @Override
+    public void addCardData(CardData cardData) {
+        dataSource.add(cardData);
+    }
+
+    @Override
+    public void clearCardData() {
+        dataSource.clear();
     }
 }
 

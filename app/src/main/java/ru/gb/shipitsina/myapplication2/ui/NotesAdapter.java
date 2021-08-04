@@ -1,4 +1,5 @@
 package ru.gb.shipitsina.myapplication2.ui;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,9 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.gb.shipitsina.myapplication2.R;
@@ -19,15 +22,19 @@ public class NotesAdapter extends RecyclerView.Adapter <NotesAdapter.ViewHolder>
 
     private final static String TAG = "SocialNetworkAdapter";
     private CardsSource dataSource;
+    private final Fragment fragment;
     private OnItemClickListener itemClickListener;
+    private int menuPosition;
+
 
         // Передаём в конструктор источник данных
         // В нашем случае это массив, но может быть и запрос к БД
-        public NotesAdapter(CardsSource dataSource) {
+        public NotesAdapter(CardsSource dataSource, Fragment fragment) {
             this.dataSource = dataSource;
+            this.fragment = fragment;
         }
 
-        // Создать новый элемент пользовательского интерфейса
+    // Создать новый элемент пользовательского интерфейса
         // Запускается менеджером
         @NonNull
         @Override
@@ -51,6 +58,9 @@ public class NotesAdapter extends RecyclerView.Adapter <NotesAdapter.ViewHolder>
             holder.setData(dataSource.getCardData(position));
             Log.d(TAG, "onBindViewHolder");
         }
+    public int getMenuPosition() {
+        return menuPosition;
+    }
 
         // Вернуть размер данных, вызывается менеджером
         @Override
@@ -67,36 +77,60 @@ public class NotesAdapter extends RecyclerView.Adapter <NotesAdapter.ViewHolder>
         void onItemClick(View view , int position);
     }
 
-// Этот класс хранит связь между данными и элементами View
-// Сложные данные могут потребовать несколько View на один пункт списка
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView title;
-    private TextView description;
-    private AppCompatImageView image;
+        private TextView title;
+        private TextView description;
+        private AppCompatImageView image;
 
+        public ViewHolder(@NonNull final View itemView) {
+            super(itemView);
+            title = itemView.findViewById(R.id.title);
+            description = itemView.findViewById(R.id.description);
+            image = itemView.findViewById(R.id.imageView);
 
-    public ViewHolder(@NonNull View itemView) {
-        super(itemView);
-        title = itemView.findViewById(R.id.title);
-        description = itemView.findViewById(R.id.description);
-        image = itemView.findViewById(R.id.imageView);
+            registerContextMenu(itemView);
 
-        // Обработчик нажатий на этом ViewHolder
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (itemClickListener != null) {
-                    itemClickListener.onItemClick(v, getAdapterPosition());
+            // Обработчик нажатий на картинке
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (itemClickListener != null) {
+                        itemClickListener.onItemClick(v, getAdapterPosition());
+                    }
                 }
+            });
+
+            // Обработчик нажатий на картинке
+            image.setOnLongClickListener(new View.OnLongClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public boolean onLongClick(View v) {
+                    menuPosition = getLayoutPosition();
+                    itemView.showContextMenu(10, 10);
+                    return true;
+                }
+            });
+        }
+
+        private void registerContextMenu(@NonNull View itemView) {
+            if (fragment != null){
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        menuPosition = getLayoutPosition();
+                        return false;
+                    }
+                });
+                fragment.registerForContextMenu(itemView);
             }
-        });
+        }
+
+        public void setData(CardData cardData){
+            title.setText(cardData.getTitle());
+            description.setText(cardData.getDescription());
+            image.setImageResource(cardData.getPicture());
+        }
     }
 
-    public void setData(CardData cardData) {
-        title.setText(cardData.getTitle());
-        description.setText(cardData.getDescription());
-        image.setImageResource(cardData.getPicture());
-    }
-}
 }
