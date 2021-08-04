@@ -20,7 +20,7 @@ import ru.gb.shipitsina.myapplication2.data.CardsSource;
 
 public class NotesAdapter extends RecyclerView.Adapter <NotesAdapter.ViewHolder>{
 
-    private final static String TAG = "SocialNetworkAdapter";
+    private final static String TAG = "NotesAdapter";
     private CardsSource dataSource;
     private final Fragment fragment;
     private OnItemClickListener itemClickListener;
@@ -52,7 +52,7 @@ public class NotesAdapter extends RecyclerView.Adapter <NotesAdapter.ViewHolder>
         // Вызывается менеджером
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NotesAdapter.ViewHolder holder, int position) {
             // Получить элемент из источника данных (БД, интернет...)
             // Вынести на экран, используя ViewHolder
             holder.setData(dataSource.getCardData(position));

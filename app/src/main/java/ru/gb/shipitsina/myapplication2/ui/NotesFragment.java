@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ru.gb.shipitsina.myapplication2.MainActivity;
+import ru.gb.shipitsina.myapplication2.Navigation;
 import ru.gb.shipitsina.myapplication2.Note;
 import ru.gb.shipitsina.myapplication2.R;
 import ru.gb.shipitsina.myapplication2.data.CardData;
@@ -32,9 +33,9 @@ public class NotesFragment extends Fragment {
     private CardsSource data;
     private NotesAdapter adapter;
     private RecyclerView recyclerView;
-    public static final String CURRENT_NOTE = "CurrentNote";
     private Publisher publisher;
-
+    private Navigation navigation;
+    private boolean moveToLastPosition;
     public static NotesFragment newInstance() {
         return new NotesFragment();
     }
@@ -61,11 +62,13 @@ public class NotesFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         MainActivity activity = (MainActivity)context;
+        navigation = activity.getNavigation();
         publisher = activity.getPublisher();
     }
 
     @Override
     public void onDetach() {
+        navigation = null;
         publisher = null;
         super.onDetach();
     }
@@ -78,14 +81,13 @@ public class NotesFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_add:
-                data.addCardData(new CardData("Заголовок " + data.size(),
-                        "Описание " + data.size(),
-                        R.drawable.blue));
+                navigation.addFragment(ChosenNoteFragment.newInstance(), true);
                 publisher.subscribe(new Observer() {
                     @Override
                     public void updateCardData(CardData cardData) {
                         data.addCardData(cardData);
                         adapter.notifyItemInserted(data.size() - 1);
+                        moveToLastPosition = true;
                     }
                 });
                 return true;
@@ -119,12 +121,15 @@ public class NotesFragment extends Fragment {
         DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(),  LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator, null));
         recyclerView.addItemDecoration(itemDecoration);
-
+        if (moveToLastPosition){
+            recyclerView.smoothScrollToPosition(data.size() - 1);
+            moveToLastPosition = false;
+        }
         // Установим слушателя
         adapter.SetOnItemClickListener(new NotesAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                showChosenNote(position);
+                navigation.addFragment(ChosenNoteFragment.newInstance(data.getCardData(position)), true);
             }
         });
     }
@@ -137,9 +142,10 @@ public class NotesFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        int position = adapter.getMenuPosition();
+        final int position = adapter.getMenuPosition();
         switch(item.getItemId()) {
             case R.id.action_update:
+                navigation.addFragment(ChosenNoteFragment.newInstance(data.getCardData(position)), true);
                 publisher.subscribe(new Observer() {
                     @Override
                     public void updateCardData(CardData cardData) {
@@ -155,19 +161,4 @@ public class NotesFragment extends Fragment {
         }
         return super.onContextItemSelected(item);
     }
-
-    private void showChosenNote(int position) {
-        //Получить менеджер фрагментов
-        FragmentManager fragmentManager = getParentFragmentManager();
-
-        // Открыть транзакцию
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        // Добавить фрагмент
-        fragmentTransaction.replace(R.id.fragment_container, ChosenNoteFragment.newInstance(data.getCardData(position)));
-        fragmentTransaction.addToBackStack(null);
-        // Закрыть транзакцию
-        fragmentTransaction.commit();
-    }
-
 }

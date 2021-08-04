@@ -34,31 +34,34 @@ import ru.gb.shipitsina.myapplication2.ui.NotesFragment;
 
 public class MainActivity extends AppCompatActivity {
     private Publisher publisher = new Publisher();
+    private Navigation navigation;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        navigation = new Navigation(getSupportFragmentManager());
         initToolbar();
-        addFragment(NotesFragment.newInstance());
+        getNavigation().addFragment(NotesFragment.newInstance(),false);
     }
 
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
-    private void addFragment(Fragment fragment) {
-        //Получить менеджер фрагментов
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        // Открыть транзакцию
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.addToBackStack(null);
-        // Закрыть транзакцию
-        fragmentTransaction.commit();
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
+    public Navigation getNavigation() {
+        return navigation;
+    }
+
     public Publisher getPublisher() {
         return publisher;
     }
