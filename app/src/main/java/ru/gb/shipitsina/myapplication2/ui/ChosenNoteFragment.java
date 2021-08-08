@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -26,6 +27,7 @@ import ru.gb.shipitsina.myapplication2.R;
 import ru.gb.shipitsina.myapplication2.data.CardData;
 import ru.gb.shipitsina.myapplication2.data.CardsSource;
 import ru.gb.shipitsina.myapplication2.data.CardsSourceImpl;
+import ru.gb.shipitsina.myapplication2.data.PictureIndexConverter;
 import ru.gb.shipitsina.myapplication2.observe.Publisher;
 
 public class ChosenNoteFragment extends Fragment {
@@ -33,6 +35,7 @@ public class ChosenNoteFragment extends Fragment {
     private CardData cardData;
     private TextInputEditText title;
     private TextInputEditText content;
+    private DatePicker datePicker;
     private Publisher publisher;
     public ChosenNoteFragment() {
     }
@@ -95,21 +98,45 @@ public class ChosenNoteFragment extends Fragment {
     private CardData collectCardData(){
         String title = this.title.getText().toString();
         String description = this.content.getText().toString();
-        int picture;
+        Date date = getDateFromDatePicker();
         if (cardData != null){
-            picture = cardData.getPicture();
+            CardData answer;
+            answer = new CardData(title, description, cardData.getPicture(), date);
+            answer.setId(cardData.getId());
+            return answer;
         } else {
-            picture = R.drawable.blue;
+            int picture = PictureIndexConverter.getPictureByIndex(PictureIndexConverter.randomPictureIndex());
+            return new CardData(title, description, picture, date);
         }
-        return new CardData(title, description, picture);
     }
+
+    // Получение даты из DatePicker
+    private Date getDateFromDatePicker() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, this.datePicker.getYear());
+        cal.set(Calendar.MONTH, this.datePicker.getMonth());
+        cal.set(Calendar.DAY_OF_MONTH, this.datePicker.getDayOfMonth());
+        return cal.getTime();
+    }
+
     private void initView(View view) {
         title = view.findViewById(R.id.inputTitle);
         content = view.findViewById(R.id.inputDescription);
+        datePicker = view.findViewById(R.id.inputDate);
     }
 
     private void populateView(){
         title.setText(cardData.getTitle());
         content.setText(cardData.getDescription());
+        initDatePicker(cardData.getDate());
+    }
+    // Установка даты в DatePicker
+    private void initDatePicker(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        this.datePicker.init(calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH),
+                null);
     }
 }

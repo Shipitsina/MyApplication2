@@ -25,7 +25,9 @@ import ru.gb.shipitsina.myapplication2.Note;
 import ru.gb.shipitsina.myapplication2.R;
 import ru.gb.shipitsina.myapplication2.data.CardData;
 import ru.gb.shipitsina.myapplication2.data.CardsSource;
+import ru.gb.shipitsina.myapplication2.data.CardsSourceFirebaseImpl;
 import ru.gb.shipitsina.myapplication2.data.CardsSourceImpl;
+import ru.gb.shipitsina.myapplication2.data.CardsSourceResponse;
 import ru.gb.shipitsina.myapplication2.observe.Observer;
 import ru.gb.shipitsina.myapplication2.observe.Publisher;
 
@@ -35,26 +37,25 @@ public class NotesFragment extends Fragment {
     private RecyclerView recyclerView;
     private Publisher publisher;
     private Navigation navigation;
-    private boolean moveToLastPosition;
+    private boolean moveToFirstPosition;
     public static NotesFragment newInstance() {
         return new NotesFragment();
     }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        data = new CardsSourceImpl(getResources()).init();
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notes, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_lines);
         initView(view);
         setHasOptionsMenu(true);
+        data = new CardsSourceFirebaseImpl().init(new CardsSourceResponse() {
+            @Override
+            public void initialized(CardsSource cardsData) {
+                adapter.notifyDataSetChanged();
+            }
+        });
+        adapter.setDataSource(data);
         return view;
     }
 
@@ -79,24 +80,7 @@ public class NotesFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.action_add:
-                navigation.addFragment(ChosenNoteFragment.newInstance(), true);
-                publisher.subscribe(new Observer() {
-                    @Override
-                    public void updateCardData(CardData cardData) {
-                        data.addCardData(cardData);
-                        adapter.notifyItemInserted(data.size() - 1);
-                        moveToLastPosition = true;
-                    }
-                });
-                return true;
-            case R.id.action_clear:
-                data.clearCardData();
-                adapter.notifyDataSetChanged();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return onItemSelected(item.getItemId()) || super.onOptionsItemSelected(item);
     }
 
     private void initView(View view) {
@@ -114,16 +98,16 @@ public class NotesFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         // Установим адаптер
-        adapter = new NotesAdapter(data, this);
+        adapter = new NotesAdapter(this);
         recyclerView.setAdapter(adapter);
 
         // Добавим разделитель карточек
         DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(),  LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator, null));
         recyclerView.addItemDecoration(itemDecoration);
-        if (moveToLastPosition){
-            recyclerView.smoothScrollToPosition(data.size() - 1);
-            moveToLastPosition = false;
+        if (moveToFirstPosition && data.size() > 0){
+            recyclerView.scrollToPosition(0);
+            moveToFirstPosition = false;
         }
         // Установим слушателя
         adapter.SetOnItemClickListener(new NotesAdapter.OnItemClickListener() {
@@ -142,23 +126,45 @@ public class NotesFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        final int position = adapter.getMenuPosition();
-        switch(item.getItemId()) {
-            case R.id.action_update:
-                navigation.addFragment(ChosenNoteFragment.newInstance(data.getCardData(position)), true);
+        return onItemSelected(item.getItemId()) || super.onContextItemSelected(item);
+    }
+
+    private boolean onItemSelected(int menuItemId){
+        switch (menuItemId){
+            case R.id.action_add:
+                navigation.addFragment(ChosenNoteFragment.newInstance(), true);
                 publisher.subscribe(new Observer() {
                     @Override
                     public void updateCardData(CardData cardData) {
-                        data.updateCardData(position, cardData);
-                        adapter.notifyItemChanged(position);
+                        data.addCardData(cardData);
+                        adapter.notifyItemInserted(data.size() - 1);
+                        // это сигнал, чтобы вызванный метод onCreateView
+                        // перепрыгнул на начало списка
+                        moveToFirstPosition = true;
+                    }
+                });
+                return true;
+            case R.id.action_update:
+                final int updatePosition = adapter.getMenuPosition();
+                navigation.addFragment(ChosenNoteFragment.newInstance(data.getCardData(updatePosition)), true);
+                publisher.subscribe(new Observer() {
+                    @Override
+                    public void updateCardData(CardData cardData) {
+                        data.updateCardData(updatePosition, cardData);
+                        adapter.notifyItemChanged(updatePosition);
                     }
                 });
                 return true;
             case R.id.action_delete:
-                data.deleteCardData(position);
-                adapter.notifyItemRemoved(position);
+                int deletePosition = adapter.getMenuPosition();
+                data.deleteCardData(deletePosition);
+                adapter.notifyItemRemoved(deletePosition);
+                return true;
+            case R.id.action_clear:
+                data.clearCardData();
+                adapter.notifyDataSetChanged();
                 return true;
         }
-        return super.onContextItemSelected(item);
+        return false;
     }
 }

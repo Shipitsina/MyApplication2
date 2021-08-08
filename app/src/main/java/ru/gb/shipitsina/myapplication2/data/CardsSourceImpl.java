@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import ru.gb.shipitsina.myapplication2.R;
@@ -18,7 +19,7 @@ public class CardsSourceImpl implements CardsSource {
         this.resources = resources;
     }
 
-    public CardsSourceImpl init(){
+    public CardsSource init(CardsSourceResponse cardsSourceResponse){
         // строки заголовков из ресурсов
         String[] titles = resources.getStringArray(R.array.titles);
         // строки описаний из ресурсов
@@ -27,7 +28,10 @@ public class CardsSourceImpl implements CardsSource {
         int[] pictures = getImageArray();
         // заполнение источника данных
         for (int i = 0; i < descriptions.length; i++) {
-            dataSource.add(new CardData(titles[i], descriptions[i], pictures[i]));
+            dataSource.add(new CardData(titles[i], descriptions[i], pictures[i], Calendar.getInstance().getTime()));
+        }
+        if (cardsSourceResponse != null){
+            cardsSourceResponse.initialized(this);
         }
         return this;
     }
