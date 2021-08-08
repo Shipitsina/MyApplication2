@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "335285166595",
+    "project_id": "myapplication2-231fb",
+    "storage_bucket": "myapplication2-231fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335285166595:android:bea1b2102a25fa8bd76436",
+        "android_client_info": {
+          "package_name": "ru.gb.shipitsina.myapplication2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "335285166595-613u64c103ubt9noa1lkn38n91fphv10.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmqUSPsN2aNq7sCw_JDhplNylRX37WXww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "335285166595-613u64c103ubt9noa1lkn38n91fphv10.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

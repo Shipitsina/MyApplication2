@@ -14,6 +14,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
+
 import ru.gb.shipitsina.myapplication2.R;
 import ru.gb.shipitsina.myapplication2.data.CardData;
 import ru.gb.shipitsina.myapplication2.data.CardsSource;
@@ -29,10 +31,13 @@ public class NotesAdapter extends RecyclerView.Adapter <NotesAdapter.ViewHolder>
 
         // Передаём в конструктор источник данных
         // В нашем случае это массив, но может быть и запрос к БД
-        public NotesAdapter(CardsSource dataSource, Fragment fragment) {
-            this.dataSource = dataSource;
+        public NotesAdapter(Fragment fragment) {
             this.fragment = fragment;
         }
+    public void setDataSource(CardsSource dataSource){
+        this.dataSource = dataSource;
+        notifyDataSetChanged();
+    }
 
     // Создать новый элемент пользовательского интерфейса
         // Запускается менеджером
@@ -82,12 +87,14 @@ public class NotesAdapter extends RecyclerView.Adapter <NotesAdapter.ViewHolder>
         private TextView title;
         private TextView description;
         private AppCompatImageView image;
+        private TextView date;
 
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             description = itemView.findViewById(R.id.description);
             image = itemView.findViewById(R.id.imageView);
+            date = itemView.findViewById(R.id.date);
 
             registerContextMenu(itemView);
 
@@ -130,6 +137,7 @@ public class NotesAdapter extends RecyclerView.Adapter <NotesAdapter.ViewHolder>
             title.setText(cardData.getTitle());
             description.setText(cardData.getDescription());
             image.setImageResource(cardData.getPicture());
+            date.setText(new SimpleDateFormat("dd-MM-yy").format(cardData.getDate()));
         }
     }
 

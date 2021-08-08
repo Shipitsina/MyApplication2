@@ -1,6 +1,7 @@
 package ru.gb.shipitsina.myapplication2.data;
 
 public interface CardsSource {
+    CardsSource init(CardsSourceResponse cardsSourceResponse);
     CardData getCardData(int position);
     int size();
     void deleteCardData(int position);
