@@ -1,5 +1,8 @@
 package ru.gb.shipitsina.myapplication2.ui;
+
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -38,6 +41,7 @@ public class NotesFragment extends Fragment {
     private Publisher publisher;
     private Navigation navigation;
     private boolean moveToFirstPosition;
+
     public static NotesFragment newInstance() {
         return new NotesFragment();
     }
@@ -62,7 +66,7 @@ public class NotesFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        MainActivity activity = (MainActivity)context;
+        MainActivity activity = (MainActivity) context;
         navigation = activity.getNavigation();
         publisher = activity.getPublisher();
     }
@@ -73,6 +77,7 @@ public class NotesFragment extends Fragment {
         publisher = null;
         super.onDetach();
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.cards_menu, menu);
@@ -88,7 +93,7 @@ public class NotesFragment extends Fragment {
         initRecyclerView();
     }
 
-    private void initRecyclerView(){
+    private void initRecyclerView() {
 
         // Эта установка служит для повышения производительности системы
         recyclerView.setHasFixedSize(true);
@@ -102,10 +107,10 @@ public class NotesFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         // Добавим разделитель карточек
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(),  LinearLayoutManager.VERTICAL);
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator, null));
         recyclerView.addItemDecoration(itemDecoration);
-        if (moveToFirstPosition && data.size() > 0){
+        if (moveToFirstPosition && data.size() > 0) {
             recyclerView.scrollToPosition(0);
             moveToFirstPosition = false;
         }
@@ -117,6 +122,7 @@ public class NotesFragment extends Fragment {
             }
         });
     }
+
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -129,8 +135,8 @@ public class NotesFragment extends Fragment {
         return onItemSelected(item.getItemId()) || super.onContextItemSelected(item);
     }
 
-    private boolean onItemSelected(int menuItemId){
-        switch (menuItemId){
+    private boolean onItemSelected(int menuItemId) {
+        switch (menuItemId) {
             case R.id.action_add:
                 navigation.addFragment(ChosenNoteFragment.newInstance(), true);
                 publisher.subscribe(new Observer() {
@@ -156,13 +162,49 @@ public class NotesFragment extends Fragment {
                 });
                 return true;
             case R.id.action_delete:
-                int deletePosition = adapter.getMenuPosition();
-                data.deleteCardData(deletePosition);
-                adapter.notifyItemRemoved(deletePosition);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Внимание!")
+                        .setMessage("Вы уверены, что хотите удалить эту заметку?")
+                        .setIcon(R.mipmap.ic_launcher_round)
+                        .setCancelable(true)
+                        .setPositiveButton("Да",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        int deletePosition = adapter.getMenuPosition();
+                                        data.deleteCardData(deletePosition);
+                                        adapter.notifyItemRemoved(deletePosition);
+                                    }
+                                })
+                        .setNegativeButton("Нет",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                        .show();
                 return true;
             case R.id.action_clear:
-                data.clearCardData();
-                adapter.notifyDataSetChanged();
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
+                builder2.setTitle("Внимание!")
+                        .setMessage("Вы уверены, что хотите удалить ВСЕ заметки?")
+                        .setIcon(R.mipmap.ic_launcher_round)
+                        .setCancelable(true)
+                        .setPositiveButton("Да",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        data.clearCardData();
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                })
+                        .setNegativeButton("Нет",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                        .show();
                 return true;
         }
         return false;
